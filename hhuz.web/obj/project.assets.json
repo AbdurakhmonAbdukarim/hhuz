@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz\\hhuz.csproj",
-      "projectName": "hhuz",
-      "projectPath": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz\\hhuz.csproj",
+      "projectUniqueName": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz.web\\hhuz.web.csproj",
+      "projectName": "hhuz.web",
+      "projectPath": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz.web\\hhuz.web.csproj",
       "packagesPath": "C:\\Users\\abduk\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz\\obj\\",
+      "outputPath": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz.web\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\abduk\\AppData\\Roaming\\NuGet\\NuGet.Config"

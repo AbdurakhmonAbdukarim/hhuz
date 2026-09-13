@@ -1,0 +1,7 @@
+﻿services:
+  hhuz.web:
+    image: hhuz.web
+    build:
+      context: .
+      dockerfile: hhuz.web/Dockerfile
+
