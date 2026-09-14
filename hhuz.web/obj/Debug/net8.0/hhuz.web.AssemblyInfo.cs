@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("hhuz.web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+db2aa91ddb283f8e2b8ca34a394492b80f28aebb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f04b707d29bef7b492fac4851ad48783d46e86e0")]
 [assembly: System.Reflection.AssemblyProductAttribute("hhuz.web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("hhuz.web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
