@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using hhuz.Models;
+using Microsoft.EntityFrameworkCore;
 using hhuz.web.Models;
 
 namespace hhuz.web.Data;
@@ -10,5 +11,5 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<TestR> TestPings { get; set; }
-    public DbSet<TestR> Users { get; set; }
+    public DbSet<Users> Users { get; set; }
 }
