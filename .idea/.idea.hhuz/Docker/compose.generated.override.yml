@@ -1,0 +1,22 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  hhuz.web:
+    build:
+      context: "C:\\Users\\abduk\\RiderProjects\\hhuz"
+      dockerfile: "hhuz.web/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/hhuz.web.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_STATICWEBASSETS: "/app/bin/Debug/net8.0/hhuz.web.staticwebassets.runtime.CT.json"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "hhuz.web:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz.web:/app:rw"
+    - "C:\\Users\\abduk\\RiderProjects\\hhuz:/src:rw"
+    - "C:\\Users\\abduk\\.nuget\\packages:/home/app/.nuget/packages"
+    working_dir: "/app"

@@ -1,31 +1,47 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using hhuz.Models;
+using hhuz.web.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace hhuz.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly AppDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(AppDbContext context)
     {
-        _logger = logger;
+        _context = context;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        // Public ko'rish uchun oxirgi vakansiyalar
+        var positions = await _context.Positions
+            .AsNoTracking()
+            .OrderByDescending(x => x.CreatedAt)
+            .Take(6)
+            .ToListAsync();
+
+        // Oxirgi 24 soatda yaratilgan CV lar
+        var last24Hours = DateTime.UtcNow.AddHours(-24);
+
+        var newCvsLast24Hours = await _context.Cvs
+            .AsNoTracking()
+            .CountAsync(x => x.CreatedAt >= last24Hours);
+
+        ViewBag.Positions = positions;
+        ViewBag.NewCvsLast24Hours = newCvsLast24Hours;
+
+        // Umumiy public statistikalar
+        ViewBag.TotalPositions = await _context.Positions
+            .AsNoTracking()
+            .CountAsync();
+
+        ViewBag.TotalUsers = await _context.Users
+            .AsNoTracking()
+            .CountAsync();
+
         return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

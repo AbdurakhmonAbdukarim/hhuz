@@ -5,6 +5,6 @@ namespace hhuz.Service;
 
 public interface UserService
 {
-     Task<bool> LoginIn(LoginDto dto);
+     Task<bool> Login(LoginDto dto);
      Task<bool> Register(LoginDto dto);
 }

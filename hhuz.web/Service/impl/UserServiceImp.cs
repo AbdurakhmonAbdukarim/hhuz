@@ -23,11 +23,12 @@ public class UserServiceImp : UserService
     public async Task<bool> Register(LoginDto dto)
     {
         bool exists = await _context.Users.AnyAsync(u => u.Email == dto.email);
+        
         if (!exists)
         {
             var Users = _userMapper.ToEntity(dto);
             _context.Add(Users);
-            int row = _context.SaveChanges();
+            int row = await _context.SaveChangesAsync();
             return row > 0;
         }
         else
@@ -37,7 +38,7 @@ public class UserServiceImp : UserService
         
     }
 
-    public async Task<bool> LoginIn(LoginDto dto)
+    public async Task<bool> Login(LoginDto dto)
     {
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.Email == dto.email);

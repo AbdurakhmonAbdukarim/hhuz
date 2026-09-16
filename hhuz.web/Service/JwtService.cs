@@ -1,6 +1,8 @@
-﻿namespace hhuz.Service;
+﻿using hhuz.Dto;
+
+namespace hhuz.Service;
 
 public interface JwtService
 {
-    string GenerateJwtToken(string username, string email);
+    Task<string> GenerateJwtToken(LoginDto dto);
 }

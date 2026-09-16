@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\hhuz.web.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz.web\\wwwroot\\css\\login.css",
+      "PackagePath": "staticwebassets\\css\\login.css"
+    },
+    {
       "Id": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz.web\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

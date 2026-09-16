@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "jwMWmipvM0fkd8tJP6LCixFmW5X2uHELaJwEUaL+e0E=",
+  "Hash": "VbfSnpqikk+aTyavLtI+KkNfzF2iIFYRkBYVMPLbDas=",
   "Source": "hhuz.web",
   "BasePath": "_content/hhuz.web",
   "Mode": "Default",
@@ -53,6 +53,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz.web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\hhuz.web.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz.web\\wwwroot\\css\\login.css",
+      "SourceId": "hhuz.web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz.web\\wwwroot\\",
+      "BasePath": "_content/hhuz.web",
+      "RelativePath": "css/login.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\login.css"
     },
     {
       "Identity": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz.web\\wwwroot\\css\\site.css",
