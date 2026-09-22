@@ -61,6 +61,13 @@ builder.Services.AddAuthentication(options =>
             // Re-direction to'g'ri ishlashi uchun
             context.Response.Redirect("/Login");
             return Task.CompletedTask;  
+            
+        },
+        OnForbidden = context =>
+        {
+            context.Response.Redirect("/AccessDenied");
+
+            return Task.CompletedTask;
         }
     };
 });

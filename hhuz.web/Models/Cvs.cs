@@ -5,11 +5,18 @@ namespace hhuz.Models;
 public class Cvs
 {
     public string Id{get;set;} =Guid.NewGuid().ToString();
-    public string Status{get;set;}
-    public string Version{get;set;}
+    public CvStatus Status { get; set; } = CvStatus.DRAFT;
+    public int Version { get; set; } = 1;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
-    //one to one connection  User
+    //1.many side connection with Users
     public string UserId { get; set; }
-    public Users user { get; set; } = null;
+    public Users User { get; set; } = null;
+    
+    //2. many side connectoin with Position
+    public string PositionId { get; set; }
+    public Positions Position { get; set; }
+    
+    //3. one side connection with likes
+    public ICollection<Likes>  Like { get; set; } = new List<Likes>();
 }

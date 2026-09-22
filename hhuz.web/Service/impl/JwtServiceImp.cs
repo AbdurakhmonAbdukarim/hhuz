@@ -20,19 +20,16 @@ public class JwtServiceImp : JwtService
         
     }
     
-    public async Task<string> GenerateJwtToken(LoginDto dto)
+    public async Task<string> GenerateJwtToken(Users user)
     {
-        Users? user =await _appDbContext.Users.FirstOrDefaultAsync(d => d.Email == dto.email) ;
-        if (user == null)
-        {
-            throw new Exception("User not found"); 
-        }
+        
         var jwtSettings = _configuration.GetSection("jwt");
         var key = Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? "");
 
-        var clams = new[]
+        var claims = new[]
         {
-            new Claim(ClaimTypes.Name, user.username),
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.Name, user.Username),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Role, user.Role.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
@@ -41,7 +38,7 @@ public class JwtServiceImp : JwtService
         var token = new JwtSecurityToken(
                     issuer: jwtSettings["Issuer"],
                     audience: jwtSettings["Audience"],
-                    claims: clams,
+                    claims: claims,
                     expires: DateTime.UtcNow.AddMinutes(1),
                     signingCredentials: new SigningCredentials(
                         new SymmetricSecurityKey(key),

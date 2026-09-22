@@ -31,45 +31,64 @@ public class AuthController : Controller
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(LoginDto request)
+    public async Task<IActionResult> Register(RegisterDto request)
 {
     try
     {
-        await _userService.Register(request);
-        
-        string token = await _jwtService.GenerateJwtToken(request);
-        SetToken(token);
+        var users= await _userService.Register(request);
+        SetToken( await _jwtService.GenerateJwtToken(users));
         return RedirectToAction("Index", "Home");
     }
     catch (Exception ex) when (ex.Message == "Email already exists")
     {
         TempData["Message"] = "Email already exists, sign in";
-        
+
         return RedirectToAction("Login", "Auth");
+    }
+    catch (Exception ex) when (ex.Message == "Username already exists")
+    {
+        TempData["Message"] = "Username already exists";
+
+        return RedirectToAction("Register", "Auth");
+    }
+    catch (Exception ex) when (ex.Message == "Invalid role")
+    {
+        TempData["Message"] = "Invalid role";
+
+        return RedirectToAction("Register", "Auth");
     }
 }
 
     [HttpPost("login")]
     public  async Task<IActionResult> Login(LoginDto request)
     {
-        var exists = await _userService.Login(request);
         try
         {
-            string token =await _jwtService.GenerateJwtToken(request);
-            SetToken(token);
+            var exists = await _userService.Login(request);
+            
+            SetToken(await _jwtService.GenerateJwtToken(exists));
+            return RedirectToAction("Index", "Home");
         }
         catch (Exception ex) when (ex.Message == "Password doesn't match")
         {
             TempData["Message"] = "Password doesn't match";
+
             return RedirectToAction("Login", "Auth");
         }
         catch (Exception ex) when (ex.Message == "User not found")
         {
             TempData["Message"] = "User not found";
+
             return RedirectToAction("Register", "Auth");
         }
-        return RedirectToAction("Index", "Home");
+    }
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        Response.Cookies.Delete("X-Access-Token");
         
+        return RedirectToAction
+            ("Index", "Home");
     }
     
     private void SetToken(string token)
