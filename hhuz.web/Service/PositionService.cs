@@ -13,4 +13,6 @@ public interface PositionService
     Task<Positions> UpdateAsync(Positions position, int expectedVersion);
 
     Task<bool> DeleteAsync(string id);
+    
+    Task<int> DeleteManyAsync(List<string> ids);
 }

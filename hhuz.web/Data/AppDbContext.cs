@@ -241,6 +241,14 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Positions>()
             .Property(x => x.Version)
             .IsConcurrencyToken();
+
+        modelBuilder.Entity<Attributes>()
+            .Property(x => x.Version)
+            .IsConcurrencyToken();
+
+        modelBuilder.Entity<Profiles>()
+            .Property(x => x.Version)
+            .IsConcurrencyToken();
         
         //TAGS
         modelBuilder.Entity<Tags>()

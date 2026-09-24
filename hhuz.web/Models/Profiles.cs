@@ -12,7 +12,9 @@ public class Profiles
 
     public string? PhotoUrl { get; set; }
 
-    
+    public int Version { get; set; } = 1;
+
+
     //1.One to one join Users
     public string UserId{get;set;}
     public Users User { get; set; } = null;

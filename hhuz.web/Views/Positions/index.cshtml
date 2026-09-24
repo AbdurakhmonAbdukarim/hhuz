@@ -1,0 +1,202 @@
+﻿@model List<hhuz.Models.Positions>
+
+@{
+ViewData["Title"] = "Positions";
+var canManage = User.IsInRole("ROLE_RECRUITER") || User.IsInRole("ROLE_ADMIN");
+}
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="mb-0">Positions</h2>
+            <p class="text-muted mb-0 mt-1">Available job positions</p>
+        </div>
+        @if (canManage)
+        {
+        <a asp-controller="Positions" asp-action="Create" class="btn btn-primary">
+            + Create Position
+        </a>
+        }
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+    <div class="alert alert-warning">@TempData["Message"]</div>
+    }
+    @if (TempData["Success"] != null)
+    {
+    <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @* Toolbar: faqat tanlanganda ko'rinadi *@
+    @if (canManage)
+    {
+    <div id="selection-toolbar"
+         class="d-none mb-3 p-2 border rounded bg-light align-items-center gap-3">
+            <span class="text-muted small">
+                <span id="selected-count">0</span> selected
+            </span>
+        <button id="btn-edit"
+                class="btn btn-sm btn-outline-secondary"
+                disabled
+                onclick="editSelected()">
+            Edit
+        </button>
+        <form id="delete-form" method="post" style="display:inline">
+            @Html.AntiForgeryToken()
+            <button type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    id="btn-delete"
+                    disabled
+                    onclick="deleteSelected()">
+                Delete
+            </button>
+        </form>
+        <button class="btn btn-sm btn-link text-muted ms-auto"
+                onclick="clearSelection()">
+            Clear
+        </button>
+    </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+    <div class="table-responsive">
+        <table class="table table-hover align-middle" id="positions-table">
+            <thead class="table-dark">
+            <tr>
+                @if (canManage)
+                {
+                <th style="width: 40px">
+                    <input type="checkbox" id="select-all"
+                           class="form-check-input"
+                           onchange="toggleAll(this)" />
+                </th>
+                }
+                <th>Title</th>
+                <th>Description</th>
+                <th>Max Projects</th>
+                <th>Created</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var position in Model)
+            {
+            var detailsUrl = Url.Action("Details", "Positions", new { id = position.Id });
+
+            <tr class="position-row"
+                data-id="@position.Id"
+                data-url="@detailsUrl"
+                onclick="rowClick(event, this)"
+                style="cursor: pointer">
+
+                @if (canManage)
+                {
+                <td onclick="event.stopPropagation()">
+                    <input type="checkbox"
+                           class="form-check-input row-checkbox"
+                           value="@position.Id"
+                           onchange="onCheckboxChange()" />
+                </td>
+                }
+
+                <td>
+                    <a href="@detailsUrl" class="fw-bold text-decoration-none">
+                        @position.Title
+                    </a>
+                </td>
+                <td class="text-muted">@position.ShortDescription</td>
+                <td>@position.MaxProjects</td>
+                <td class="text-muted small">
+                    @position.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")
+                </td>
+            </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    }
+    else
+    {
+    <div class="alert alert-info">No positions available.</div>
+    }
+
+</div>
+
+@section Scripts {
+<script>
+    function getChecked() {
+        return [...document.querySelectorAll('.row-checkbox:checked')];
+    }
+
+    function onCheckboxChange() {
+        const toolbar = document.getElementById('selection-toolbar');
+        if (!toolbar) return;
+
+        const count = getChecked().length;
+
+        toolbar.classList.toggle('d-none', count === 0);
+        toolbar.classList.toggle('d-flex', count > 0);
+
+        document.getElementById('selected-count').textContent = count;
+        document.getElementById('btn-edit').disabled = count !== 1;   // Edit faqat 1 ta uchun
+        document.getElementById('btn-delete').disabled = count === 0;
+    }
+
+    function toggleAll(master) {
+        document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = master.checked);
+        onCheckboxChange();
+    }
+
+    function rowClick(event, row) {
+        // Havola yoki checkbox bosilsa, ular o'zi ishlaydi
+        if (event.target.closest('a') || event.target.type === 'checkbox') return;
+
+        const cb = row.querySelector('.row-checkbox');
+        if (cb) {
+            // Recruiter/Admin: qatorni belgilash
+            cb.checked = !cb.checked;
+            onCheckboxChange();
+        } else {
+            // Candidate/mehmon: pozitsiyani ochish
+            window.location.href = row.dataset.url;
+        }
+    }
+
+    function clearSelection() {
+        document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = false);
+        const master = document.getElementById('select-all');
+        if (master) master.checked = false;
+        onCheckboxChange();
+    }
+
+    function editSelected() {
+        const checked = getChecked();
+        if (checked.length !== 1) return;
+        window.location.href = `/Positions/Edit/${checked[0].value}`;
+    }
+
+    function deleteSelected() {
+        const ids = getChecked().map(cb => cb.value);
+        if (ids.length === 0) return;
+
+        const msg = ids.length === 1 ? 'Delete this position?' : `Delete ${ids.length} positions?`;
+        if (!confirm(msg)) return;
+
+        const form = document.getElementById('delete-form');
+        form.querySelectorAll('input[name="ids"]').forEach(el => el.remove());
+
+        ids.forEach(id => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'ids';
+            input.value = id;
+            form.appendChild(input);
+        });
+
+        form.action = '/Positions/DeleteBulk';
+        form.submit();
+    }
+</script>
+}

@@ -1,0 +1,201 @@
+﻿@model hhuz.Dto.CvViewViewModel
+@using hhuz.Models
+
+@{
+    ViewData["Title"] = "CV: " + Model.Position?.Title;
+
+    var profile = Model.Cv.User?.Profile;
+    var fullName = profile != null
+        ? $"{profile.FirstName} {profile.LastName}".Trim()
+        : Model.Cv.User?.Username;
+
+    // Har bir pozitsiya atributi uchun: nomi, ko'rinadigan qiymati (bo'sh bo'lsa null)
+    var rows = (Model.Position?.PositionAttributes ?? new List<PositionAttributes>())
+        .OrderBy(pa => pa.SortOrder)
+        .Select(pa =>
+        {
+            var av = Model.AttributeValues.FirstOrDefault(v => v.AttributeId == pa.AttributeId);
+            var type = pa.Attribute.DataType;
+
+            string? display = type switch
+            {
+                AttributeDataType.BOOLEAN =>
+                    av?.Value == null ? null : (av.Value == "true" ? "Yes" : "No"),
+                AttributeDataType.DROPDOWN =>
+                    pa.Attribute.AttributeOptions?
+                        .FirstOrDefault(o => o.Id == av?.AttributeOptionId)?.Value,
+                AttributeDataType.DATE =>
+                    DateTime.TryParse(av?.Value, out var d) ? d.ToString("dd MMM yyyy") : null,
+                _ =>
+                    string.IsNullOrWhiteSpace(av?.Value) ? null : av!.Value
+            };
+
+            return (Name: pa.Attribute?.Name ?? pa.Name, Display: display,
+                    IsText: type == AttributeDataType.TEXT);
+        })
+        .ToList();
+
+    var missingCount = rows.Count(r => r.Display == null);
+    var isDraft = Model.Cv.Status == CvStatus.DRAFT;
+}
+
+<div class="container py-4">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="row g-4">
+        @* CV hujjatining o'zi *@
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body p-4">
+
+                    @* Header *@
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        @if (!string.IsNullOrEmpty(profile?.PhotoUrl))
+                        {
+                            <img src="@profile.PhotoUrl" alt="Photo"
+                                 class="rounded-circle" style="width:80px;height:80px;object-fit:cover" />
+                        }
+                        <div>
+                            <h2 class="mb-0">@fullName</h2>
+                            <div class="text-muted">@Model.Position?.Title</div>
+                            @if (!string.IsNullOrEmpty(profile?.Location))
+                            {
+                                <small class="text-muted">@profile.Location</small>
+                            }
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    @* Atributlar *@
+                    <h5 class="text-uppercase text-muted small fw-bold mb-3">Information</h5>
+                    @if (rows.Any())
+                    {
+                        <table class="table table-sm mb-4">
+                            <tbody>
+                            @foreach (var r in rows)
+                            {
+                                <tr class="@(r.Display == null ? "table-danger" : "")">
+                                    <th style="width:35%" class="fw-semibold">@r.Name</th>
+                                    <td>
+                                        @if (r.Display == null)
+                                        {
+                                            <span class="text-danger fst-italic">Not filled</span>
+                                        }
+                                        else if (r.IsText)
+                                        {
+                                            <div style="white-space: pre-line">@r.Display</div>
+                                        }
+                                        else
+                                        {
+                                            @r.Display
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-muted">This position has no attributes.</p>
+                    }
+
+                    @* Loyihalar *@
+                    <h5 class="text-uppercase text-muted small fw-bold mb-3">Projects</h5>
+                    @if (Model.Projects.Any())
+                    {
+                        @foreach (var proj in Model.Projects)
+                        {
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <strong>@proj.Name</strong>
+                                    <small class="text-muted">
+                                        @proj.StartDate.ToString("MMM yyyy") —
+                                        @(proj.EndDate?.ToString("MMM yyyy") ?? "Present")
+                                    </small>
+                                </div>
+                                <div style="white-space: pre-line">@proj.Description</div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">No matching projects.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @* Yon panel: holat va amallar *@
+        <div class="col-lg-4">
+            <div class="card sticky-top" style="top: 20px">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong>Status:</strong>
+                        @if (isDraft)
+                        {
+                            <span class="badge bg-warning text-dark">Draft</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">Published</span>
+                        }
+                    </div>
+
+                    @if (missingCount > 0)
+                    {
+                        <p class="text-danger small">@missingCount field(s) not filled</p>
+                    }
+
+                    <div class="mb-3 d-flex align-items-center gap-2">
+                        <span class="text-muted">
+                            <i class="bi bi-heart-fill text-danger"></i> @Model.LikeCount like(s)
+                        </span>
+                        @if (Model.IsRecruiter)
+                        {
+                            <form method="post" asp-action="ToggleLike" asp-route-id="@Model.Cv.Id" class="ms-auto">
+                                <button type="submit" class="btn btn-sm @(Model.HasLiked ? "btn-danger" : "btn-outline-danger")">
+                                    @(Model.HasLiked ? "Unlike" : "Like")
+                                </button>
+                            </form>
+                        }
+                    </div>
+
+                    @if (Model.IsOwner)
+                    {
+                        @if (isDraft)
+                        {
+                            <a asp-action="Edit" asp-route-id="@Model.Cv.Id" class="btn btn-primary w-100 mb-2">
+                                Edit
+                            </a>
+
+                            <form method="post" asp-action="Publish" asp-route-id="@Model.Cv.Id">
+                                <button type="submit" class="btn btn-success w-100 mb-2"
+                                        disabled="@(missingCount > 0)">
+                                    Publish CV
+                                </button>
+                            </form>
+                        }
+
+                        <form method="post" asp-action="Delete" asp-route-id="@Model.Cv.Id"
+                              onsubmit="return confirm('Delete this CV?')">
+                            <button type="submit" class="btn btn-outline-danger w-100">
+                                Delete CV
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <p class="text-muted small mb-0">
+                            Created: @Model.Cv.CreatedAt.ToString("dd MMM yyyy")
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

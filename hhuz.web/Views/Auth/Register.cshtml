@@ -1,131 +1,111 @@
-﻿@model hhuz.Dto.LoginDto
-
-@using hhuz.Models
+﻿@model hhuz.Dto.RegisterDto
 
 @{
-    ViewData["Title"] = "Ro‘yxatdan o‘tish";
+    ViewData["Title"] = "Register";
 }
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/login.css" />
-}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
 
-<div class="auth-container">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
 
-    <div class="auth-card">
+                    <h2 class="text-center mb-4">Create account</h2>
 
-        <h3>Ro‘yxatdan o‘tish</h3>
+                    @if (TempData["Message"] != null)
+                    {
+                        <div class="alert alert-warning">
+                            @TempData["Message"]
+                        </div>
+                    }
 
-        @if (ViewBag.Error != null)
-        {
-            <div class="alert-error">
-                @ViewBag.Error
+                    <form asp-controller="Auth"
+                          asp-action="Register"
+                          method="post">
+
+                        <div class="mb-3">
+                            <label asp-for="username"
+                                   class="form-label">
+                                Username
+                            </label>
+
+                            <input asp-for="username"
+                                   class="form-control"
+                                   placeholder="Username" />
+
+                            <span asp-validation-for="username"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="email"
+                                   class="form-label">
+                                Email
+                            </label>
+
+                            <input asp-for="email"
+                                   type="email"
+                                   class="form-control"
+                                   placeholder="example@gmail.com" />
+
+                            <span asp-validation-for="email"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="password"
+                                   class="form-label">
+                                Password
+                            </label>
+
+                            <input asp-for="password"
+                                   type="password"
+                                   class="form-control"
+                                   placeholder="Password" />
+
+                            <span asp-validation-for="password"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="role"
+                                   class="form-label">
+                                Role
+                            </label>
+
+                            <select asp-for="role"
+                                    class="form-select">
+                                <option value="0">Candidate</option>
+                                <option value="1">Recruiter</option>
+                            </select>
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-primary w-100">
+                            Register
+                        </button>
+
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <span>Already have an account?</span>
+                        <a asp-controller="Auth"
+                           asp-action="Login">
+                            Login
+                        </a>
+                    </div>
+
+                </div>
             </div>
-        }
-
-        <form asp-controller="Auth"
-              asp-action="Register"
-              method="post">
-
-            <div asp-validation-summary="ModelOnly"
-                 class="validation-summary">
-            </div>
-
-            <!-- USERNAME -->
-            <div class="form-group">
-
-                <label asp-for="username">
-                    Username
-                </label>
-
-                <input asp-for="username"
-                       placeholder="Username"
-                       required />
-
-                <span asp-validation-for="username"
-                      class="validation-error">
-                </span>
-
-            </div>
-
-            <!-- EMAIL -->
-            <div class="form-group">
-
-                <label asp-for="email">
-                    Email
-                </label>
-
-                <input asp-for="email"
-                       type="email"
-                       placeholder="example@gmail.com"
-                       required />
-
-                <span asp-validation-for="email"
-                      class="validation-error">
-                </span>
-
-            </div>
-
-            <!-- PASSWORD -->
-            <div class="form-group">
-
-                <label asp-for="password">
-                    Parol
-                </label>
-
-                <input asp-for="password"
-                       type="password"
-                       placeholder="Parol"
-                       required />
-
-                <span asp-validation-for="password"
-                      class="validation-error">
-                </span>
-
-            </div>
-
-            <!-- ROLE -->
-            <div class="form-group">
-
-                <label asp-for="role">
-                    Foydalanuvchi turi
-                </label>
-
-                <select asp-for="role"
-                        asp-items="Html.GetEnumSelectList<Roles>()"
-                        required>
-
-                    <option value="">
-                        -- Rolni tanlang --
-                    </option>
-
-                </select>
-
-                <span asp-validation-for="role"
-                      class="validation-error">
-                </span>
-
-            </div>
-
-            <!-- SUBMIT -->
-            <button type="submit">
-                Ro‘yxatdan o‘tish
-            </button>
-
-        </form>
-
-        <!-- LOGIN -->
-        <div class="register-link">
-
-            <span>Akkauntingiz bormi?</span>
-
-            <a asp-controller="Auth"
-               asp-action="Login">
-                Kirish
-            </a>
 
         </div>
-
     </div>
-
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

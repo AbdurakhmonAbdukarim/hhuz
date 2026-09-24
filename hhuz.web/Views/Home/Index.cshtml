@@ -1,255 +1,143 @@
 ﻿@{
-    ViewData["Title"] = "Bosh sahifa";
+    ViewData["Title"] = "Home";
+
+    var positions = ViewBag.Positions as List<hhuz.Models.Positions>;
+    var totalPositions = ViewBag.TotalPositions ?? 0;
+    var totalUsers = ViewBag.TotalUsers ?? 0;
+    var newCvsLast24Hours = ViewBag.NewCvsLast24Hours ?? 0;
 }
 
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<div class="container py-5">
 
-    <title>@ViewData["Title"] - HHUZ</title>
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">
+            Welcome to HHUZ
+        </h1>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <p class="lead text-muted">
+            Find opportunities, build your CV, and connect with recruiters.
+        </p>
 
-    <style>
-        /* Sizdagi CSS shu yerda qoladi */
-    </style>
-</head>
-
-<body>
-
-<header class="navbar">
-    <div class="nav-container">
-
-        <!-- LOGO -->
-        <a asp-controller="Home"
-           asp-action="Index"
-           class="logo">
-            HH<span>UZ</span>
-        </a>
-
-        <!-- MENU -->
-        <nav class="nav-links">
-
-            <a asp-controller="Vacancy"
-               asp-action="Index">
-                Vakansiyalar
+        @if (User.Identity?.IsAuthenticated != true)
+        {
+            <a asp-controller="Auth"
+               asp-action="Register"
+               class="btn btn-primary btn-lg me-2">
+                Get Started
             </a>
-
-            <a asp-controller="Company"
-               asp-action="Index">
-                Kompaniyalar
-            </a>
-
-            <a asp-controller="Resume"
-               asp-action="Index">
-                Rezyume
-            </a>
-
-            <a asp-controller="Home"
-               asp-action="Help">
-                Yordam
-            </a>
-
-        </nav>
-
-        <!-- AUTH BUTTONS -->
-        <div class="nav-buttons">
 
             <a asp-controller="Auth"
                asp-action="Login"
-               class="btn-login">
-                Kirish
+               class="btn btn-outline-secondary btn-lg">
+                Login
             </a>
-
-            <a asp-controller="Auth"
-               asp-action="Register"
-               class="btn-register">
-                Ro‘yxatdan o‘tish
+        }
+        else
+        {
+            <a asp-controller="Positions"
+               asp-action="Index"
+               class="btn btn-primary btn-lg">
+                Browse Positions
             </a>
-
-        </div>
-
+        }
     </div>
-</header>
 
 
-<main>
+    <!-- Statistics -->
 
-    <section class="hero">
+    <div class="row g-3 mb-5">
 
-        <div class="hero-container">
-
-            <div class="badge">
-                <span class="badge-dot"></span>
-                Yangi imkoniyatlarni kashf eting
-            </div>
-
-            <h1>
-                Orzuingizdagi
-                <span>ishni toping</span>
-            </h1>
-
-            <p>
-                HHUZ — ish beruvchilar va iste'dodli mutaxassislarni
-                bir joyda bog‘laydigan zamonaviy platforma.
-            </p>
-
-            <!-- SEARCH -->
-            <form asp-controller="Vacancy"
-                  asp-action="Index"
-                  method="get"
-                  class="search-box">
-
-                <div class="search-input">
-
-                    <span>🔎</span>
-
-                    <input type="text"
-                           name="search"
-                           placeholder="Lavozim, kasb yoki kompaniya..." />
-
-                </div>
-
-                <button class="search-btn"
-                        type="submit">
-                    Ish qidirish
-                </button>
-
-            </form>
-
-            <!-- STATS -->
-            <div class="stats">
-
-                <div class="stat">
-                    <h3>10K+</h3>
-                    <p>Faol vakansiyalar</p>
-                </div>
-
-                <div class="stat">
-                    <h3>5K+</h3>
-                    <p>Kompaniyalar</p>
-                </div>
-
-                <div class="stat">
-                    <h3>50K+</h3>
-                    <p>Ro‘yxatdan o‘tganlar</p>
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- FEATURES -->
-    <section class="features">
-
-        <div class="section-container">
-
-            <div class="section-header">
-                <h2>Nega HHUZ?</h2>
-                <p>
-                    O‘zingizga mos ishni topish endi yanada oson.
-                </p>
-            </div>
-
-            <div class="cards">
-
-                <div class="card">
-                    <div class="icon">🔎</div>
-
-                    <h3>Oson qidiruv</h3>
-
-                    <p>
-                        Kerakli vakansiyani lavozim, joylashuv
-                        va boshqa parametrlar orqali tez toping.
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h3>@totalPositions</h3>
+                    <p class="text-muted mb-0">
+                        Total Positions
                     </p>
                 </div>
+            </div>
+        </div>
 
-
-                <div class="card">
-                    <div class="icon">🏢</div>
-
-                    <h3>Eng yaxshi kompaniyalar</h3>
-
-                    <p>
-                        Ishonchli kompaniyalar vakansiyalarini
-                        ko‘rib chiqing va o‘zingizga mosini tanlang.
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h3>@totalUsers</h3>
+                    <p class="text-muted mb-0">
+                        Registered Users
                     </p>
                 </div>
+            </div>
+        </div>
 
-
-                <div class="card">
-                    <div class="icon">🚀</div>
-
-                    <h3>Karyerangizni rivojlantiring</h3>
-
-                    <p>
-                        Rezyumengizni yarating va yangi karyera
-                        imkoniyatlariga ega bo‘ling.
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h3>@newCvsLast24Hours</h3>
+                    <p class="text-muted mb-0">
+                        New CVs (24h)
                     </p>
                 </div>
-
             </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- CTA -->
-    <section class="cta">
-
-        <div class="section-container">
-
-            <div class="cta-box">
-
-                <h2>
-                    Yangi karyera boshlashga tayyormisiz?
-                </h2>
-
-                <p>
-                    Bugunoq ro‘yxatdan o‘ting va minglab
-                    vakansiyalarni ko‘ring.
-                </p>
-
-                <a asp-controller="Auth"
-                   asp-action="Register"
-                   class="cta-btn">
-                    Boshlash →
-                </a>
-
-            </div>
-
-        </div>
-
-    </section>
-
-</main>
-
-
-<!-- FOOTER -->
-<footer>
-
-    <div class="footer-container">
-
-        <div class="footer-logo">
-            HHUZ
-        </div>
-
-        <div class="copyright">
-            © @DateTime.Now.Year HHUZ.
-            Barcha huquqlar himoyalangan.
         </div>
 
     </div>
 
-</footer>
 
-</body>
-</html>
+    <!-- Latest Positions -->
+
+    <div class="mb-4">
+        <h2>Latest Positions</h2>
+    </div>
+
+    @if (positions != null && positions.Any())
+    {
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Max Projects</th>
+                        <th>Created</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                @foreach (var position in positions)
+                {
+                    <tr>
+                        <td>
+                            <strong>@position.Title</strong>
+                        </td>
+
+                        <td>
+                            @position.ShortDescription
+                        </td>
+
+                        <td>
+                            @position.MaxProjects
+                        </td>
+
+                        <td>
+                            @position.CreatedAt.ToLocalTime()
+                        </td>
+                    </tr>
+                }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No positions available.
+        </div>
+    }
+
+</div>

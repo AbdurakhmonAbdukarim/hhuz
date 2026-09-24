@@ -2,7 +2,7 @@
 
 public enum Roles
 {
-    ROLE_CANDIDATE ,
-    ROLE_RECRUITOR ,
-    ROLE_ADMIN
+    ROLE_CANDIDATE =0,
+    ROLE_RECRUITER=1,
+    ROLE_ADMIN=2
 }

@@ -7,6 +7,7 @@ public class Attributes
     public string Name { get; set; }
     public string Description { get; set; }
     public AttributeDataType DataType { get; set; }
+    public int Version { get; set; } = 1;
 
     
     //1.many connection with Category

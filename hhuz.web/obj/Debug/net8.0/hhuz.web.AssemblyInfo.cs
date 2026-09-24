@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("0e66e235-1546-4787-92f9-ae3f4ed9d4d3")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("hhuz.web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5f8a2b221953c6489259916887788f027fa4d0dc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4fbefbaf80af2bf62d9d156d138dbc4e10c8ec2e")]
 [assembly: System.Reflection.AssemblyProductAttribute("hhuz.web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("hhuz.web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

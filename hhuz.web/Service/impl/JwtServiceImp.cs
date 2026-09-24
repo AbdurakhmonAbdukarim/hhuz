@@ -39,7 +39,7 @@ public class JwtServiceImp : JwtService
                     issuer: jwtSettings["Issuer"],
                     audience: jwtSettings["Audience"],
                     claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(1),
+                    expires: DateTime.UtcNow.AddMinutes(10),
                     signingCredentials: new SigningCredentials(
                         new SymmetricSecurityKey(key),
                         SecurityAlgorithms.HmacSha256

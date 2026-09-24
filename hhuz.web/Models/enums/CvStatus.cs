@@ -2,7 +2,7 @@
 
 public enum CvStatus
 {
-    DRAFT,
-    PUBLISHED,
+    DRAFT=0,
+    PUBLISHED =1,
     ARCHIVED,
 }

@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "K/j7EblWedE=",
+  "dgSpecHash": "HUyYa7x7S20=",
   "success": true,
   "projectFilePath": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz.web\\hhuz.web.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\abduk\\.nuget\\packages\\aspnet.security.oauth.github\\8.3.0\\aspnet.security.oauth.github.8.3.0.nupkg.sha512",
     "C:\\Users\\abduk\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\abduk\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\8.0.31\\microsoft.aspnetcore.authentication.google.8.0.31.nupkg.sha512",
     "C:\\Users\\abduk\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.13\\microsoft.aspnetcore.authentication.jwtbearer.8.0.13.nupkg.sha512",
     "C:\\Users\\abduk\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\abduk\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.3.3\\microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",

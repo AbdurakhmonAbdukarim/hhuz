@@ -2,7 +2,6 @@ using hhuz.web.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using hhuz.Dto;
-using hhuz.Mapper;
 using hhuz.Models;
 using hhuz.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,10 +17,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // 3. Dependency Injections
-builder.Services.AddScoped<BaseMapper<Users, LoginDto>, UserMapper>();
 builder.Services.AddScoped<UserService, UserServiceImp>();
 builder.Services.AddScoped<JwtService, JwtServiceImp>();
-
+builder.Services.AddScoped<PositionService, PositionServiceImp>();
+builder.Services.AddScoped<AttributeService, AttributeServiceImp>();
+builder.Services.AddScoped<CandidateProfileService, CandidateProfileServiceImp>();
+builder.Services.AddScoped<ProjectService, ProjectServiceImp>();
+builder.Services.AddScoped<CVService, CvServiceImp>();
+builder.Services.AddScoped<DiscussionService, DiscussionServiceImp>();
+builder.Services.AddScoped<LikeService, LikeServiceImp>();
+builder.Services.AddScoped<UserService, UserServiceImp>();
 
 // 4. Authentication & JWT Setup
 builder.Services.AddAuthentication(options =>

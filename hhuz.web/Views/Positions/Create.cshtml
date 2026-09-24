@@ -1,0 +1,104 @@
+﻿@model hhuz.Dto.PositionCreateDto
+
+@{
+    ViewData["Title"] = "Create Position";
+}
+
+<div class="container py-4">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-7">
+
+            <h2 class="mb-4">Create Position</h2>
+
+            <form asp-controller="Positions"
+                  asp-action="CreatePosition"
+                  method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="Title"
+                           class="form-label">
+                        Title
+                    </label>
+
+                    <input asp-for="Title"
+                           class="form-control"
+                           placeholder="Java Backend Developer" />
+
+                    <span asp-validation-for="Title"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label asp-for="ShortDescription"
+                           class="form-label">
+                        Short Description
+                    </label>
+
+                    <textarea asp-for="ShortDescription"
+                              class="form-control"
+                              rows="4"
+                              placeholder="Describe the position..."></textarea>
+
+                    <span asp-validation-for="ShortDescription"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label asp-for="MaxProjects"
+                           class="form-label">
+                        Maximum Projects
+                    </label>
+
+                    <input asp-for="MaxProjects"
+                           type="number"
+                           min="0"
+                           class="form-control" />
+
+                    <span asp-validation-for="MaxProjects"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Create
+                    </button>
+
+                    <a asp-controller="Positions"
+                       asp-action="Index"
+                       class="btn btn-secondary">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

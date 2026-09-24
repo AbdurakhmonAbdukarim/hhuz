@@ -10,6 +10,7 @@ public class Users
     [Key]
     public string  Id { get; set; } = Guid.NewGuid().ToString();
     [Required]
+    [Column("username")]
     public string Username { get; set; }
     [Required]
     public string Password { get; set; }
@@ -18,7 +19,9 @@ public class Users
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
     [Column(TypeName = "varchar(50)")]
-    public Roles Role { get; set; } = Roles.ROLE_CANDIDATE;
+    public Roles Role { get; set; } 
+    
+    public bool IsBlocked { get; set; } = false;
     
     //1. one side connection with CV
     public ICollection<Cvs> Cvs { get; set; } = new List<Cvs>();

@@ -18,6 +18,18 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\abduk\RiderProjects\hhuz\hhuz.web
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Attribute/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXR0cmlidXRlXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Attribute/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXR0cmlidXRlXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Attribute/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXR0cmlidXRlXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Auth/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -26,12 +38,60 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Cvs/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3ZzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Cvs/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3ZzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Cvs/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3ZzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Positions/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zaXRpb25zXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Positions/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zaXRpb25zXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Positions/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zaXRpb25zXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Positions/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zaXRpb25zXGluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Positions/_Discussions.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zaXRpb25zXF9EaXNjdXNzaW9ucy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Profile/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Projects/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Projects/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdHNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Projects/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/abduk/RiderProjects/hhuz/hhuz.web/Views/Shared/Error.cshtml]

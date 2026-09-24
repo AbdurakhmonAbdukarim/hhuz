@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\js\\site.js"
     },
     {
+      "Id": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz.web\\wwwroot\\js\\tag-input.js",
+      "PackagePath": "staticwebassets\\js\\tag-input.js"
+    },
+    {
       "Id": "C:\\Users\\abduk\\RiderProjects\\hhuz\\hhuz.web\\wwwroot\\lib\\bootstrap\\LICENSE",
       "PackagePath": "staticwebassets\\lib\\bootstrap"
     },

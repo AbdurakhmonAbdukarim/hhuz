@@ -117,3 +117,5 @@ C:\Users\abduk\RiderProjects\hhuz\hhuz.web\bin\Debug\net8.0\Microsoft.IdentityMo
 C:\Users\abduk\RiderProjects\hhuz\hhuz.web\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\abduk\RiderProjects\hhuz\hhuz.web\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\abduk\RiderProjects\hhuz\hhuz.web\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\abduk\RiderProjects\hhuz\hhuz.web\bin\Debug\net8.0\AspNet.Security.OAuth.GitHub.dll
+C:\Users\abduk\RiderProjects\hhuz\hhuz.web\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.Google.dll

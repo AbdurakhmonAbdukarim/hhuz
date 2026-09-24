@@ -1,0 +1,69 @@
+﻿@model hhuz.Dto.ProjectUpdateDto
+
+@{
+    ViewData["Title"] = "Edit Project";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+
+            <h2 class="mb-4">Edit Project</h2>
+
+            <form method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Project Name *</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                    <small class="text-muted">Markdown formatting supported</small>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="StartDate" class="form-label">Start Date *</label>
+                        <input asp-for="StartDate" type="date" class="form-control" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EndDate" class="form-label">End Date</label>
+                        <input asp-for="EndDate" type="date" class="form-control" />
+                        <small class="text-muted">Leave empty if ongoing</small>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Tags" class="form-label">Tags</label>
+                    <input asp-for="Tags" id="tags-input" class="form-control"
+                           placeholder="Type a tag and press Enter" />
+                    <small class="text-muted">Start typing to see existing tags</small>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <link href="https://cdn.jsdelivr.net/npm/@@yaireo/tagify@@4/dist/tagify.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@@yaireo/tagify@@4"></script>
+    <script src="~/js/tag-input.js" asp-append-version="true"></script>
+}

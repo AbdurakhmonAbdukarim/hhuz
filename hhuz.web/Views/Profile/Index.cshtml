@@ -1,0 +1,276 @@
+﻿@model hhuz.Dto.ProfilePageViewModel
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-0">My Profile</h2>
+            <p class="text-muted mb-0 mt-1">Manage your professional information</p>
+        </div>
+    </div>
+
+    {{-- Tabs --}}
+    <ul class="nav nav-tabs mb-4" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="me-tab" data-bs-toggle="tab"
+                    data-bs-target="#me-section" type="button" role="tab">
+                Me
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="info-tab" data-bs-toggle="tab"
+                    data-bs-target="#info-section" type="button" role="tab">
+                Info
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="projects-tab" data-bs-toggle="tab"
+                    data-bs-target="#projects-section" type="button" role="tab">
+                Projects (@(Model.Projects?.Count ?? 0))
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="cvs-tab" data-bs-toggle="tab"
+                    data-bs-target="#cvs-section" type="button" role="tab">
+                CVs (@(Model.Cvs?.Count ?? 0))
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+
+        {{-- TAB 1: ME --}}
+        <div class="tab-pane fade show active" id="me-section" role="tabpanel">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Basic Information</h5>
+                    
+                    <form method="post" asp-action="UpdateMe">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Version" value="@(Model.Profile?.Version ?? 0)" />
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">First Name</label>
+                                <input type="text" name="FirstName" class="form-control"
+                                       value="@(Model.Profile?.FirstName ?? "")" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" name="LastName" class="form-control"
+                                       value="@(Model.Profile?.LastName ?? "")" />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" name="Location" class="form-control"
+                                   placeholder="City, Country"
+                                   value="@(Model.Profile?.Location ?? "")" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Photo URL</label>
+                            <input type="url" name="PhotoUrl" class="form-control"
+                                   placeholder="https://example.com/photo.jpg"
+                                   value="@(Model.Profile?.PhotoUrl ?? "")" />
+                            <small class="text-muted">Upload to cloud storage and paste URL</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {{-- TAB 2: INFO (Attributes) --}}
+        <div class="tab-pane fade" id="info-section" role="tabpanel">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Your Attributes</h5>
+
+                    @if (Model.AttributeValues != null && Model.AttributeValues.Any())
+                    {
+                        @foreach (var av in Model.AttributeValues.OrderBy(a => a.Attribute?.Category?.Name))
+                        {
+                            <div class="card mb-2">
+                                <div class="card-body p-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div style="flex: 1">
+                                            <strong>@av.Attribute?.Name</strong>
+                                            <br />
+                                            <small class="text-muted">@av.Attribute?.Category?.Name</small>
+                                            <br />
+                                            @RenderAttributeValue(av)
+                                        </div>
+                                        <form method="post" style="display:inline"
+                                              asp-action="RemoveAttributeValue"
+                                              asp-route-attributeId="@av.AttributeId"
+                                              onsubmit="return confirm('Remove this attribute?')">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                Remove
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-info mb-0">
+                            No attributes added yet. Add attributes below.
+                        </div>
+                    }
+                </div>
+            </div>
+
+            {{-- Add Attributes --}}
+            @if (Model.AvailableAttributes != null && Model.AvailableAttributes.Any())
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Add Attribute</h5>
+                        <div class="list-group">
+                            @foreach (var attr in Model.AvailableAttributes.OrderBy(a => a.Category?.Name))
+                            {
+                                <form method="post" asp-action="AddAttribute" asp-route-attributeId="@attr.Id"
+                                      style="display:inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="list-group-item list-group-item-action text-start">
+                                        <strong>@attr.Name</strong>
+                                        <br />
+                                        <small class="text-muted">@attr.Category?.Name</small>
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        {{-- TAB 3: PROJECTS --}}
+        <div class="tab-pane fade" id="projects-section" role="tabpanel">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Your Projects</h5>
+
+                    @if (Model.Projects != null && Model.Projects.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead class="table-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Period</th>
+                                    <th>Tags</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var proj in Model.Projects.OrderByDescending(p => p.StartDate))
+                                {
+                                    <tr>
+                                        <td>
+                                            <strong>@proj.Name</strong>
+                                            <br />
+                                            <small class="text-muted">@proj.Description?.Substring(0, Math.Min(60, proj.Description?.Length ?? 0))</small>
+                                        </td>
+                                        <td class="text-muted small">
+                                            @proj.StartDate.ToString("MMM yyyy")
+                                            @if (proj.EndDate.HasValue)
+                                            {
+                                                <span>— @proj.EndDate.Value.ToString("MMM yyyy")</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @foreach (var tag in proj.ProjectTags ?? new List<hhuz.Models.ProjectTags>())
+                                            {
+                                                <span class="badge bg-secondary">@tag.Tag.Name</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info mb-0">
+                            No projects yet. <a asp-controller="Projects" asp-action="Create">Add one</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        {{-- TAB 4: CVs --}}
+        <div class="tab-pane fade" id="cvs-section" role="tabpanel">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Your CVs</h5>
+
+                    @if (Model.Cvs != null && Model.Cvs.Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var cv in Model.Cvs.OrderByDescending(c => c.CreatedAt))
+                            {
+                                <a href="/cvs/@cv.Id" class="list-group-item list-group-item-action">
+                                    <strong>@cv.Position?.Title</strong>
+                                    <br />
+                                    <small class="text-muted">
+                                        @cv.CreatedAt.ToString("dd MMM yyyy")
+                                        — Status: 
+                                        @if (cv.Status == hhuz.Models.CvStatus.DRAFT)
+                                        {
+                                            <span class="badge bg-warning">Draft</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Published</span>
+                                        }
+                                    </small>
+                                </a>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info mb-0">
+                            No CVs created yet. <a asp-controller="Positions" asp-action="Index">Create one</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@functions {
+    string RenderAttributeValue(hhuz.Models.CandidateAttributeValues av)
+    {
+        return av.Attribute?.DataType switch
+        {
+            hhuz.Models.AttributeDataType.BOOLEAN => av.AttributeOption?.Value == "true" ? "✓ Yes" : "✗ No",
+            hhuz.Models.AttributeDataType.DROPDOWN => av.AttributeOption?.Value ?? "-",
+            hhuz.Models.AttributeDataType.DATE => av.Value != null ? DateTime.Parse(av.Value).ToString("dd MMM yyyy") : "-",
+            hhuz.Models.AttributeDataType.NUMERIC => av.Value ?? "-",
+            hhuz.Models.AttributeDataType.IMAGE => av.Value != null ? $"<img src='{av.Value}' style='max-height: 50px' />" : "-",
+            _ => av.Value ?? "-"
+        };
+    }
+}
+
+@section Scripts {
+    <script>
+        // Auto-save yoki shu tarzda. Hozir form submit bilan ishlayapti.
+    </script>
+}

@@ -1,0 +1,92 @@
+﻿@model List<hhuz.Models.Cvs>
+
+@{
+    ViewData["Title"] = "My CVs";
+}
+
+<div class="container py-4">
+    <h2 class="mb-0">My CVs</h2>
+    <p class="text-muted mt-1">Create and manage your CVs</p>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <form method="post" asp-action="DeleteSelected"
+              onsubmit="return confirm('Delete selected CVs?')">
+
+            <div class="btn-toolbar mb-2">
+                <button type="submit" id="deleteBtn" class="btn btn-sm btn-outline-danger" disabled>
+                    Delete
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th style="width:40px">
+                                <input type="checkbox" id="selectAll" class="form-check-input" />
+                            </th>
+                            <th>Position</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var cv in Model.OrderByDescending(c => c.CreatedAt))
+                        {
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="ids" value="@cv.Id" class="form-check-input row-check" />
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@cv.Id">@cv.Position?.Title</a>
+                                </td>
+                                <td>
+                                    @if (cv.Status == hhuz.Models.CvStatus.DRAFT)
+                                    {
+                                        <span class="badge bg-warning text-dark">Draft</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">Published</span>
+                                    }
+                                </td>
+                                <td>@cv.CreatedAt.ToString("dd MMM yyyy")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No CVs created yet.
+            <a asp-controller="Positions" asp-action="Index">Browse positions</a> and create your first CV.
+        </div>
+    }
+</div>
+
+@section Scripts {
+<script>
+    const checks = document.querySelectorAll('.row-check');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const selectAll = document.getElementById('selectAll');
+
+    function refresh() {
+        deleteBtn.disabled = ![...checks].some(c => c.checked);
+    }
+
+    checks.forEach(c => c.addEventListener('change', refresh));
+    selectAll?.addEventListener('change', () => {
+        checks.forEach(c => c.checked = selectAll.checked);
+        refresh();
+    });
+</script>
+}

@@ -1,0 +1,178 @@
+﻿@model List<hhuz.Models.Projects>
+
+@{
+    ViewData["Title"] = "My Projects";
+}
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="mb-0">My Projects</h2>
+            <p class="text-muted mb-0 mt-1">Manage your project portfolio</p>
+        </div>
+        <a asp-controller="Projects" asp-action="Create" class="btn btn-primary">
+            + Add Project
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @* Toolbar: faqat tanlanganda ko'rinadi *@
+    <div id="selection-toolbar"
+         class="d-none mb-3 p-2 border rounded bg-light align-items-center gap-3">
+        <span class="text-muted small">
+            <span id="selected-count">0</span> selected
+        </span>
+        <button id="btn-edit"
+                class="btn btn-sm btn-outline-secondary"
+                disabled
+                onclick="editSelected()">
+            Edit
+        </button>
+        <form id="delete-form" method="post" style="display:inline">
+            @Html.AntiForgeryToken()
+            <button type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    id="btn-delete"
+                    disabled
+                    onclick="deleteSelected()">
+                Delete
+            </button>
+        </form>
+        <button class="btn btn-sm btn-link text-muted ms-auto"
+                onclick="clearSelection()">
+            Clear
+        </button>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle" id="projects-table">
+                <thead class="table-dark">
+                <tr>
+                    <th style="width: 40px">
+                        <input type="checkbox" id="select-all"
+                               class="form-check-input"
+                               onchange="toggleAll(this)" />
+                    </th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Period</th>
+                    <th>Tags</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var project in Model.OrderByDescending(p => p.StartDate))
+                {
+                    var desc = project.Description ?? "";
+                    if (desc.Length > 60)
+                    {
+                        desc = desc.Substring(0, 60) + "...";
+                    }
+
+                    <tr class="project-row" data-id="@project.Id"
+                        onclick="rowClick(event, this)" style="cursor: pointer">
+                        <td onclick="event.stopPropagation()">
+                            <input type="checkbox" class="form-check-input row-checkbox"
+                                   value="@project.Id" onchange="onCheckboxChange()" />
+                        </td>
+                        <td><strong>@project.Name</strong></td>
+                        <td class="text-muted">@desc</td>
+                        <td class="text-muted small">
+                            @project.StartDate.ToString("dd MMM yyyy")
+                            — @(project.EndDate?.ToString("dd MMM yyyy") ?? "Ongoing")
+                        </td>
+                        <td>
+                            @foreach (var tag in project.ProjectTags ?? new List<hhuz.Models.ProjectTags>())
+                            {
+                                <span class="badge bg-secondary me-1">@tag.Tag.Name</span>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No projects yet. <a asp-action="Create">Create your first project</a>
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+<script>
+    function getChecked() {
+        return [...document.querySelectorAll('.row-checkbox:checked')];
+    }
+
+    function onCheckboxChange() {
+        const count = getChecked().length;
+        const toolbar = document.getElementById('selection-toolbar');
+
+        toolbar.classList.toggle('d-none', count === 0);
+        toolbar.classList.toggle('d-flex', count > 0);
+
+        document.getElementById('selected-count').textContent = count;
+        document.getElementById('btn-edit').disabled = count !== 1;   // Edit faqat 1 ta uchun
+        document.getElementById('btn-delete').disabled = count === 0;
+    }
+
+    function toggleAll(master) {
+        document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = master.checked);
+        onCheckboxChange();
+    }
+
+    function rowClick(event, row) {
+        if (event.target.type === 'checkbox') return;
+        const cb = row.querySelector('.row-checkbox');
+        if (cb) {
+            cb.checked = !cb.checked;
+            onCheckboxChange();
+        }
+    }
+
+    function clearSelection() {
+        document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = false);
+        const master = document.getElementById('select-all');
+        if (master) master.checked = false;
+        onCheckboxChange();
+    }
+
+    function editSelected() {
+        const checked = getChecked();
+        if (checked.length !== 1) return;
+        window.location.href = `/Projects/Edit/${checked[0].value}`;
+    }
+
+    function deleteSelected() {
+        const ids = getChecked().map(cb => cb.value);
+        if (ids.length === 0) return;
+
+        const msg = ids.length === 1 ? 'Delete this project?' : `Delete ${ids.length} projects?`;
+        if (!confirm(msg)) return;
+
+        const form = document.getElementById('delete-form');
+        form.querySelectorAll('input[name="ids"]').forEach(el => el.remove());
+
+        ids.forEach(id => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'ids';
+            input.value = id;
+            form.appendChild(input);
+        });
+
+        form.action = '/Projects/DeleteBulk';
+        form.submit();
+    }
+</script>
+}

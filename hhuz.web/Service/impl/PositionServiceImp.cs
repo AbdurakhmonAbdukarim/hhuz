@@ -19,30 +19,66 @@ public class PositionServiceImp :PositionService
         var pos= await _context.FindAsync<Positions>(id);
         if (pos == null)
             throw new Exception("Unable to find position with id: " + id);
+        
         return pos;
     }
 
     public async Task<List<Positions>> GetAllAsync()
     {
-        List<Positions>? list = await _context.Positions.ToListAsync();
-        return list;
+        return  await _context.Positions
+            .AsNoTracking().OrderByDescending(p=>p.CreatedAt).ToListAsync();
     }
 
-    public Task<Positions> CreateAsync(Positions position)
+    public async Task<Positions> CreateAsync(Positions position)
     {
-        Positions pos = new Positions()
         {
-            
+            _context.Positions.AddAsync(position);
+            await _context.SaveChangesAsync();
+
+            return position;
         }
     }
 
-    public Task<Positions> UpdateAsync(Positions position, int expectedVersion)
+    public async Task<Positions> UpdateAsync(Positions position, int expectedVersion)
     {
-        throw new NotImplementedException();
+        var exs = await _context.Positions.FirstOrDefaultAsync(p => p.Id == position.Id);
+        if (exs == null)
+            throw new KeyNotFoundException($"Position not found: {position.Id}");
+
+        if (exs.Version != expectedVersion)
+            throw new DbUpdateConcurrencyException("Version mismatch");
+
+        exs.Title = position.Title;
+        exs.ShortDescription= position.ShortDescription;
+        exs.MaxProjects= position.MaxProjects;
+
+        exs.Version++;
+        _context.Positions.Update(exs);
+        await _context.SaveChangesAsync();
+        
+        return exs;
+
     }
 
-    public Task<bool> DeleteAsync(string id)
+    public async Task<bool> DeleteAsync(string id)
     {
-        throw new NotImplementedException();
+        var pos = await _context.Positions.FirstOrDefaultAsync(p => p.Id == id);
+        if (pos == null)
+            return false;
+
+        pos.IsDeleted = true;
+        pos.Version++;
+
+        _context.Positions.Update(pos);
+        await _context.SaveChangesAsync();
+        
+        return true;
+    }
+    
+    public async Task<int> DeleteManyAsync(List<string> ids)
+    {
+        return await _context.Positions
+            .Where(p => ids.Contains(p.Id) && !p.IsDeleted)
+            .ExecuteUpdateAsync(s => s.SetProperty(p => p.IsDeleted, true));
     }
 }

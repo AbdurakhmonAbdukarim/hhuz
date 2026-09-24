@@ -1,0 +1,21 @@
+﻿@model List<hhuz.Dto.DiscussionPostDto>
+
+<div id="discussion-list">
+    @if (Model == null || !Model.Any())
+    {
+        <p class="text-muted" id="no-posts">No posts yet. Be the first to start the discussion.</p>
+    }
+    else
+    {
+        @foreach (var post in Model)
+        {
+            <div class="border-bottom pb-2 mb-3">
+                <div class="d-flex justify-content-between">
+                    <strong>@post.UserName</strong>
+                    <small class="text-muted">@post.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</small>
+                </div>
+                <div class="mt-1" style="white-space: pre-line">@post.Content</div>
+            </div>
+        }
+    }
+</div>
